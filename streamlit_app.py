@@ -31,13 +31,12 @@ st.markdown(
 bedrock_runtime = boto3.client(
     service_name="bedrock-runtime",
     region_name="us-east-1",
-    aws_access_key_id='AKIA4CF23CZVYSGYVR6B',
-    aws_secret_access_key='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',
+    aws_access_key_id=st.secrets["AWS_ACCESS_KEY_ID"],
+    aws_secret_access_key=st.secrets["AWS_SECRET_ACCESS_KEY"],
     config=config.Config(
         connect_timeout=1000,
         read_timeout=3000
     )
-
 )
 
 
