@@ -8,7 +8,7 @@ from langchain.chains import ConversationChain
 from langchain.llms.bedrock import Bedrock
 from langchain.memory import ConversationBufferMemory
 from langchain.prompts.prompt import PromptTemplate
-
+from botocore import config
 
 def get_text_chunks(text):
     text_splitter = RecursiveCharacterTextSplitter(
@@ -31,8 +31,13 @@ st.markdown(
 bedrock_runtime = boto3.client(
     service_name="bedrock-runtime",
     region_name="us-east-1",
-    aws_access_key_id=st.secrets["AWS_ACCESS_KEY_ID"],
-    aws_secret_access_key=st.secrets["AWS_SECRET_ACCESS_KEY"],
+    aws_access_key_id='AKIA4CF23CZVYSGYVR6B',
+    aws_secret_access_key='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',
+    config=config.Config(
+        connect_timeout=1000,
+        read_timeout=3000
+    )
+
 )
 
 

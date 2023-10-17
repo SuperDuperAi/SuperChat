@@ -4,6 +4,7 @@
 
 https://superchat.streamlit.app/
 
+[![Streamlit App](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://superchat.streamlit.app)
 
 #### based on ChatwithPDF by Claude on Bedrock
 
