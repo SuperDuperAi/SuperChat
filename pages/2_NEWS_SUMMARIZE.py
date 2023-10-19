@@ -21,8 +21,11 @@ with st.sidebar:
     chunk_size = st.sidebar.slider('chunk_size', 0, 10000, 1000)
     pdf_chunks_limit = st.sidebar.slider('post_chunks_limit', 0, 95000, 90000)
 
-# input_url = st.text_input("Enter a URL:", value='https://www.bbc.com/news/world-middle-east-67147059')
-input_url = st.text_input("Enter a URL:")
+url = ''
+if st.experimental_get_query_params():
+    url = st.experimental_get_query_params()['url'][0]
+
+input_url = st.text_input("Enter a URL:", value=url)
 
 
 if "messages" not in st.session_state:
@@ -92,10 +95,12 @@ if input_url and st.session_state['doc_news'] == "":
             # st.info(prompt_template)
 
             st.warning(f"Page len: {len(page_content)}")
+            st.experimental_set_query_params = {'url': input_url}
 
         news_summarise = model.predict(input=prompt_template)
         st.session_state['doc_news'] = news_summarise
         st.session_state.messages.append({"role": "assistant", "content": news_summarise})
+
 
         # with st.chat_message("assistant"):
         #     st.markdown(news_summarise)
