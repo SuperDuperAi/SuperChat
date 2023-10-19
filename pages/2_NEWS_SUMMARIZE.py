@@ -1,12 +1,8 @@
 import time
 import streamlit as st
-from PyPDF2 import PdfReader
-from langchain.text_splitter import CharacterTextSplitter, RecursiveCharacterTextSplitter
 from langchain.document_loaders import NewsURLLoader
-from langchain.prompts import PromptTemplate
-from langchain.chains import LLMChain, StuffDocumentsChain
 
-from runtime import model, llm
+from runtime import model
 
 st.title("SuperChat with NEWS (any articles)")
 st.markdown(
@@ -15,11 +11,6 @@ st.markdown(
 if 'doc_news' not in st.session_state:
     st.session_state['doc_news'] = ""
 
-
-with st.sidebar:
-    st.subheader('Parameters')
-    chunk_size = st.sidebar.slider('chunk_size', 0, 10000, 1000)
-    pdf_chunks_limit = st.sidebar.slider('post_chunks_limit', 0, 95000, 90000)
 
 url = ''
 if st.experimental_get_query_params():

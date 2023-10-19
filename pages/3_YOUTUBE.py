@@ -1,13 +1,8 @@
 import time
 import streamlit as st
-from PyPDF2 import PdfReader
-from langchain.text_splitter import CharacterTextSplitter, RecursiveCharacterTextSplitter
-from langchain.document_loaders import NewsURLLoader
-from langchain.prompts import PromptTemplate
-from langchain.chains import LLMChain, StuffDocumentsChain
 from pytube import YouTube
 
-from runtime import model, llm
+from runtime import model
 from youtube_transcript_api import YouTubeTranscriptApi
 from youtube_transcript_api.formatters import SRTFormatter
 
@@ -18,20 +13,17 @@ st.markdown(
 if 'doc_youtube' not in st.session_state:
     st.session_state['doc_youtube'] = ""
 
-
 url = ''
 if st.experimental_get_query_params():
     url = st.experimental_get_query_params()['url'][0]
 
 input_url = st.text_input("Enter a URL:", value=url)
 
-
 if "messages" not in st.session_state:
     st.session_state.messages = []
 
 if input_url and st.session_state['doc_youtube'] == "":
     with st.spinner('Processing'):
-
         yt = YouTube(input_url)
         stream = yt.streams.first()
 
@@ -110,7 +102,6 @@ if input_url and st.session_state['doc_youtube'] == "":
         news_summarise = model.predict(input=prompt_template)
         st.session_state['doc_youtube'] = news_summarise
         st.session_state.messages.append({"role": "assistant", "content": news_summarise})
-
 
 for message in st.session_state.messages:
     with st.chat_message(message["role"]):
