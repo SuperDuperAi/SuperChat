@@ -75,6 +75,14 @@ if input_url and st.session_state['doc_news'] == "":
         (6) Political Orientation Analysis. 
         (7) Fake news detection or manipulation, critical thinking.
         
+        ### Questions:
+        Q1:
+        Q2:
+        Q3:
+        
+        [Provide three follow-up questions worded as if I'm asking you. 
+        Format in bold as Q1, Q2, and Q3. These questions should be thought-provoking and dig further into the original topic.]
+
         </example>
         
         Answer the question immediately without preamble.

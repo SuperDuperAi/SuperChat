@@ -84,6 +84,11 @@ if pdf_docs and st.session_state['doc_pdf'] == "":
     
         Result in Markdown format.
         Answer in 8000 words or less.
+        
+        ### Questions:
+        [Provide three follow-up questions worded as if I'm asking you. 
+        Format in bold as Q1, Q2, and Q3. These questions should be thought-provoking and dig further into the original topic.]
+
         """
 
         # st.info(prompt_template)
