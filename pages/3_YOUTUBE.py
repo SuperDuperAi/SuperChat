@@ -37,7 +37,7 @@ if input_url and st.session_state['doc_youtube'] == "":
         """
 
         with st.chat_message("assistant"):
-            st.info(details)
+            st.info({yt.title})
             st.experimental_set_query_params = {'url': input_url}
 
         list_pop_lang = ['en', 'ru', 'es', 'fr', 'de', 'zh-Hans', 'ar', 'pt', 'it', 'ja', 'hi', 'ko', 'nl', 'pl', 'tr', 'sw', 'sv', 'ro', 'uk', 'cs']
