@@ -3,7 +3,7 @@ import streamlit as st
 from pytube import YouTube
 
 from runtime import model
-from youtube_transcript_api import YouTubeTranscriptApi
+from youtube_transcript_api import YouTubeTranscriptApi, NoTranscriptFound
 from youtube_transcript_api.formatters import SRTFormatter
 
 st.title("SuperChat with Youtube transcripts")
@@ -28,22 +28,27 @@ if input_url and st.session_state['doc_youtube'] == "":
         stream = yt.streams.first()
 
         details = f"""
-        title: {yt.title},\n\n
-        author: {yt.author},\n\n
-        
-        * length: {yt.length},\n\n
-        * views: {yt.views},\n\n
-        ---
-        description: {yt.description},\n\n
-        ---
-        keywords: {yt.keywords},\n\n
+        title: {yt.title},
+        author: {yt.author},
+        length: {yt.length},
+        views: {yt.views},
+        description: {yt.description},\n
+        keywords: {yt.keywords},\n
         """
 
         with st.chat_message("assistant"):
             st.info(details)
             st.experimental_set_query_params = {'url': input_url}
 
-        transcript = YouTubeTranscriptApi.get_transcript(yt.video_id)
+        list_pop_lang = ['en', 'ru', 'es', 'fr', 'de', 'zh-Hans', 'ar', 'pt', 'it', 'ja', 'hi', 'ko', 'nl', 'pl', 'tr', 'sw', 'sv', 'ro', 'uk', 'cs']
+
+        try:
+            transcript = YouTubeTranscriptApi.get_transcript(yt.video_id, languages=list_pop_lang)
+        except NoTranscriptFound:
+            with st.chat_message("assistant"):
+                st.info("No transcript found for the selected language. Please select another video or language.")
+                st.stop()
+
         formatter = SRTFormatter()
         text = formatter.format_transcript(transcript)
 
@@ -71,32 +76,40 @@ if input_url and st.session_state['doc_youtube'] == "":
         ## subtitle
 
         ### Summary:  
-        [Generate a summarized and storytelling narrative from the following text.]
+        [Generate a high-level summary and storytelling narrative from the following text.]
         ---
         ### Scenes (with timecodes):
+        [dynamically adapts to the length ]
         [Divide the into three acts, 5-10 scenes. ]
         [including, if possible, descriptions, quotes and characters]
         
         ### Chapters (by scenes split by timestamps for YouTube in detail video chapters)
+        [dynamically adapts to the length ]
         00:00 Introduction
         01:30 Chapter 1: Basics
 
         ---
         ### Analysis (with timecodes):
-        (1) Identify the main themes and problems discussed.
-        (2) List interesting theses and quotes.
-        (3) Identify the main characters.
-        (4) Suggest tags for linking with articles.
-        (5) Sentiment Analysis. Is the sentiment expressed in the text positive, negative, or neutral? Please provide evidence from the text to support your assessment. Additionally, on a scale of -1 to 1, where -1 is extremely negative, 0 is neutral, and 1 is extremely positive, rate the sentiment of the text.
-        (6) Political Orientation Analysis. 
-        (7) Fake news detection or manipulation, critical thinking.
+        1. Identify the main themes and problems discussed.
+        2. List interesting theses and quotes.
+        3. Identify the main characters.
+        4. Suggest tags for linking with articles.
+        5. Sentiment Analysis. Is the sentiment expressed in the text positive, negative, or neutral? Please provide evidence from the text to support your assessment. Additionally, on a scale of -1 to 1, where -1 is extremely negative, 0 is neutral, and 1 is extremely positive, rate the sentiment of the text.
+        6. Political Orientation Analysis. (Identify and explain liberal or conservative values, democratic or autocratic tendencies, and militaristic or humanistic themes in the text.)
+        7. Fake news detection or manipulation, critical thinking.
+        
+        ### Questions:
+        Q1:
+        Q2:
+        Q3:
+        
+        [Provide three follow-up questions worded as if I'm asking you. 
+        Format in bold as Q1, Q2, and Q3. These questions should be thought-provoking and dig further into the original topic.]
 
         </example>
 
-        Answer the question immediately without preamble.
         Result in Markdown format.
-        Answer in 8000 words or less.
-
+        
         """
 
         news_summarise = model.predict(input=prompt_template)

@@ -24,7 +24,7 @@ bedrock_runtime = boto3.client(
 
 # add to sidebar inputs max_tokens_to_sample
 st.sidebar.subheader('Model parameters')
-max_tokens_to_sample = st.sidebar.slider('tokens to answer', 256, 8000, 2048)
+max_tokens_to_sample = st.sidebar.slider('tokens to answer', 256, 8000, 4000)
 
 
 llm = Bedrock(client=bedrock_runtime, model_id="anthropic.claude-v2")
