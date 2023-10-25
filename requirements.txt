@@ -10,5 +10,3 @@ openai
 youtube_transcript_api
 pytube
 lida
-lida[transformers]
-torch
